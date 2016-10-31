@@ -9,16 +9,19 @@
 import UIKit
 import CoreData
 
-class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+fileprivate let cellIdentifier = "reminderCell"
 
-    var detailViewController: DetailViewController? = nil
+class ReminderTableViewController: UITableViewController {
+
+    var detailViewController: ReminderDetailViewController? = nil
+    let coreDataManager = CoreDataManager.sharedManager
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let split = self.splitViewController {
             let controllers = split.viewControllers
-            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ReminderDetailViewController
         }
     }
 
@@ -29,11 +32,18 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     // MARK: - Table View
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let reminders = coreDataManager.fetchedResultsController.fetchedObjects {
+            return reminders.count
+        }
+        
         return 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ReminderCell
+        
+        let reminder = coreDataManager.fetchedResultsController.object(at: indexPath)
+        cell.configure(withReminder: reminder)
 
         return cell
     }
@@ -47,3 +57,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 }
 
+extension ReminderTableViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.reloadData()
+    }
+}

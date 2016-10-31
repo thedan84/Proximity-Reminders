@@ -8,9 +8,9 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class ReminderDetailViewController: UIViewController {
     
-    var reminder: AnyObject?
+    var reminder: Reminder?
 
     override func viewDidLoad() {
         super.viewDidLoad()
