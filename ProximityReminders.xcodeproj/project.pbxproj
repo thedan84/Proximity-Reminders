@@ -14,6 +14,8 @@
 		78AF82F01DC723F200660385 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78AF82EE1DC723F200660385 /* Main.storyboard */; };
 		78AF82F21DC723F200660385 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78AF82F11DC723F200660385 /* Assets.xcassets */; };
 		78AF82F51DC723F200660385 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78AF82F31DC723F200660385 /* LaunchScreen.storyboard */; };
+		78AF82FE1DC7240500660385 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF82FD1DC7240500660385 /* MapKit.framework */; };
+		78AF83001DC7241B00660385 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AF82FF1DC7241B00660385 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		78AF82F11DC723F200660385 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		78AF82F41DC723F200660385 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		78AF82F61DC723F200660385 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78AF82FD1DC7240500660385 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		78AF82FF1DC7241B00660385 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78AF82FE1DC7240500660385 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +49,7 @@
 			children = (
 				78AF82E41DC723F200660385 /* ProximityReminders */,
 				78AF82E31DC723F200660385 /* Products */,
+				78AF82FC1DC7240500660385 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,6 +67,7 @@
 				78AF82E51DC723F200660385 /* AppDelegate.swift */,
 				78AF82EA1DC723F200660385 /* MasterViewController.swift */,
 				78AF82EC1DC723F200660385 /* DetailViewController.swift */,
+				78AF82FF1DC7241B00660385 /* CoreDataManager.swift */,
 				78AF82EE1DC723F200660385 /* Main.storyboard */,
 				78AF82F11DC723F200660385 /* Assets.xcassets */,
 				78AF82F31DC723F200660385 /* LaunchScreen.storyboard */,
@@ -68,6 +75,14 @@
 				78AF82E71DC723F200660385 /* ProximityReminders.xcdatamodeld */,
 			);
 			path = ProximityReminders;
+			sourceTree = "<group>";
+		};
+		78AF82FC1DC7240500660385 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				78AF82FD1DC7240500660385 /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,6 +117,7 @@
 				TargetAttributes = {
 					78AF82E11DC723F100660385 = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = DEYT8Z7L38;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -145,6 +161,7 @@
 				78AF82E61DC723F200660385 /* AppDelegate.swift in Sources */,
 				78AF82E91DC723F200660385 /* ProximityReminders.xcdatamodeld in Sources */,
 				78AF82EB1DC723F200660385 /* MasterViewController.swift in Sources */,
+				78AF83001DC7241B00660385 /* CoreDataManager.swift in Sources */,
 				78AF82ED1DC723F200660385 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,6 +285,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = DEYT8Z7L38;
 				INFOPLIST_FILE = ProximityReminders/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.thedan84.ProximityReminders;
@@ -280,6 +298,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = DEYT8Z7L38;
 				INFOPLIST_FILE = ProximityReminders/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.thedan84.ProximityReminders;
