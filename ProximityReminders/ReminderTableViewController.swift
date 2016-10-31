@@ -23,6 +23,14 @@ class ReminderTableViewController: UITableViewController {
             let controllers = split.viewControllers
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ReminderDetailViewController
         }
+        
+        do {
+            try coreDataManager.fetchedResultsController.performFetch()
+        } catch {
+            print(error)
+        }
+        
+        coreDataManager.fetchedResultsController.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +52,7 @@ class ReminderTableViewController: UITableViewController {
         
         let reminder = coreDataManager.fetchedResultsController.object(at: indexPath)
         cell.configure(withReminder: reminder)
-
+        
         return cell
     }
 
@@ -55,6 +63,31 @@ class ReminderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 
     }
+    
+    @IBAction func addReminderButtonTapped(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "New Reminder", message: nil, preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) { saveAction in
+            let textField = alertController.textFields![0] as UITextField
+            self.coreDataManager.saveReminder(withText: textField.text!)
+        }
+        saveAction.isEnabled = false
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Get milk"
+            NotificationCenter.default.addObserver(forName: Notification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main, using: { (notification) in
+                saveAction.isEnabled = textField.text != ""
+            })
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
 }
 
 extension ReminderTableViewController: NSFetchedResultsControllerDelegate {

@@ -13,6 +13,7 @@ import CoreLocation
 class CoreDataManager {
     
     static let sharedManager = CoreDataManager()
+    let locationManager = LocationManager()
     
     // MARK: - Core Data stack
     
@@ -32,34 +33,44 @@ class CoreDataManager {
     
     lazy var fetchedResultsController: NSFetchedResultsController<Reminder> = {
         let fetchRequest: NSFetchRequest<Reminder> = Reminder.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         
         return controller
     }()
-    
-    lazy var reminderEntityDescription: NSEntityDescription = {
-        return NSEntityDescription.entity(forEntityName: "Reminder", in: self.managedObjectContext)!
-    }()
-    
-    lazy var locationEntityDescriptopn: NSEntityDescription = {
-        return NSEntityDescription.entity(forEntityName: "Location", in: self.managedObjectContext)!
-    }()
-    
+        
     // MARK: - Core Data Saving support
     
-    func saveReminder(withText text: String, andLocation location: CLLocation? = nil) {
-        let reminder = Reminder(entity: self.reminderEntityDescription, insertInto: self.managedObjectContext)
+    func saveReminder(withText text: String, locationEnabled: Bool = false) {
+        let reminder = Reminder(context: self.managedObjectContext)
         
         reminder.text = text
-        
-        if let reminderLocation = location {
-            let location = Location(entity: locationEntityDescriptopn, insertInto: self.managedObjectContext)
-            
-            location.latitude = reminderLocation.coordinate.latitude
-            location.longitude = reminderLocation.coordinate.longitude
+        reminder.date = NSDate()
+
+        if locationEnabled {
+            let location = self.saveLocation()
+            reminder.location = location
         }
         
+        self.saveContext()
+    }
+    
+    fileprivate func saveLocation() -> Location {
+        let locationToSave = Location(context: self.managedObjectContext)
+        
+        locationManager.getLocation()
+        locationManager.onLocationFix = { location in
+            locationToSave.longitude = location.coordinate.longitude
+            locationToSave.latitude = location.coordinate.latitude
+        }
+        
+        return locationToSave
+    }
+    
+    func deleteReminder(reminder: Reminder) {
+        self.managedObjectContext.delete(reminder)
         self.saveContext()
     }
     

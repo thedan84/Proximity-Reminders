@@ -7,11 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		786446401DC733D40056F7CB /* Location+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7864463C1DC733D40056F7CB /* Location+CoreDataClass.swift */; };
-		786446411DC733D40056F7CB /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7864463D1DC733D40056F7CB /* Location+CoreDataProperties.swift */; };
-		786446421DC733D40056F7CB /* Reminder+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7864463E1DC733D40056F7CB /* Reminder+CoreDataClass.swift */; };
-		786446431DC733D40056F7CB /* Reminder+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7864463F1DC733D40056F7CB /* Reminder+CoreDataProperties.swift */; };
 		786446451DC736790056F7CB /* ReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786446441DC736790056F7CB /* ReminderCell.swift */; };
+		7878102E1DC7684E0020BEFC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7878102D1DC7684E0020BEFC /* LocationManager.swift */; };
 		78AF82E61DC723F200660385 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AF82E51DC723F200660385 /* AppDelegate.swift */; };
 		78AF82E91DC723F200660385 /* ProximityReminders.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 78AF82E71DC723F200660385 /* ProximityReminders.xcdatamodeld */; };
 		78AF82EB1DC723F200660385 /* ReminderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AF82EA1DC723F200660385 /* ReminderTableViewController.swift */; };
@@ -25,11 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7864463C1DC733D40056F7CB /* Location+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataClass.swift"; sourceTree = "<group>"; };
-		7864463D1DC733D40056F7CB /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		7864463E1DC733D40056F7CB /* Reminder+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reminder+CoreDataClass.swift"; sourceTree = "<group>"; };
-		7864463F1DC733D40056F7CB /* Reminder+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Reminder+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		786446441DC736790056F7CB /* ReminderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderCell.swift; sourceTree = "<group>"; };
+		7878102D1DC7684E0020BEFC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		78AF82E21DC723F200660385 /* ProximityReminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProximityReminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78AF82E51DC723F200660385 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78AF82E81DC723F200660385 /* ProximityReminders.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProximityReminders.xcdatamodel; sourceTree = "<group>"; };
@@ -80,7 +74,8 @@
 				78AF82EA1DC723F200660385 /* ReminderTableViewController.swift */,
 				786446441DC736790056F7CB /* ReminderCell.swift */,
 				78AF82EC1DC723F200660385 /* ReminderDetailViewController.swift */,
-				78AF830B1DC72C5800660385 /* CoreDataModel */,
+				78AF82FF1DC7241B00660385 /* CoreDataManager.swift */,
+				7878102D1DC7684E0020BEFC /* LocationManager.swift */,
 				78AF82EE1DC723F200660385 /* Main.storyboard */,
 				78AF82F11DC723F200660385 /* Assets.xcassets */,
 				78AF82F31DC723F200660385 /* LaunchScreen.storyboard */,
@@ -97,18 +92,6 @@
 				78AF82FD1DC7240500660385 /* MapKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		78AF830B1DC72C5800660385 /* CoreDataModel */ = {
-			isa = PBXGroup;
-			children = (
-				78AF82FF1DC7241B00660385 /* CoreDataManager.swift */,
-				7864463E1DC733D40056F7CB /* Reminder+CoreDataClass.swift */,
-				7864463F1DC733D40056F7CB /* Reminder+CoreDataProperties.swift */,
-				7864463C1DC733D40056F7CB /* Location+CoreDataClass.swift */,
-				7864463D1DC733D40056F7CB /* Location+CoreDataProperties.swift */,
-			);
-			name = CoreDataModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,16 +168,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				786446401DC733D40056F7CB /* Location+CoreDataClass.swift in Sources */,
-				786446421DC733D40056F7CB /* Reminder+CoreDataClass.swift in Sources */,
-				786446411DC733D40056F7CB /* Location+CoreDataProperties.swift in Sources */,
 				78AF82E61DC723F200660385 /* AppDelegate.swift in Sources */,
 				78AF82E91DC723F200660385 /* ProximityReminders.xcdatamodeld in Sources */,
 				786446451DC736790056F7CB /* ReminderCell.swift in Sources */,
+				7878102E1DC7684E0020BEFC /* LocationManager.swift in Sources */,
 				78AF82EB1DC723F200660385 /* ReminderTableViewController.swift in Sources */,
 				78AF83001DC7241B00660385 /* CoreDataManager.swift in Sources */,
 				78AF82ED1DC723F200660385 /* ReminderDetailViewController.swift in Sources */,
-				786446431DC733D40056F7CB /* Reminder+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

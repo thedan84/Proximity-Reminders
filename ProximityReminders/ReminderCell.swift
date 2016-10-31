@@ -9,7 +9,8 @@
 import UIKit
 
 class ReminderCell: UITableViewCell {
-
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -22,7 +23,7 @@ class ReminderCell: UITableViewCell {
     }
     
     func configure(withReminder reminder: Reminder) {
-        
+        self.textLabel?.text = reminder.text
     }
 
 }
