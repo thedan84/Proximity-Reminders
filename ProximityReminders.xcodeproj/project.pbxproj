@@ -19,6 +19,7 @@
 		78AF82FE1DC7240500660385 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78AF82FD1DC7240500660385 /* MapKit.framework */; };
 		78AF83001DC7241B00660385 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AF82FF1DC7241B00660385 /* CoreDataManager.swift */; };
 		78AF83021DC727E100660385 /* TODO.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 78AF83011DC727E100660385 /* TODO.rtf */; };
+		78CD37951DC8F46A00EFEA4F /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CD37941DC8F46A00EFEA4F /* AlertManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		78AF82FD1DC7240500660385 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		78AF82FF1DC7241B00660385 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		78AF83011DC727E100660385 /* TODO.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = TODO.rtf; sourceTree = "<group>"; };
+		78CD37941DC8F46A00EFEA4F /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				78AF82EC1DC723F200660385 /* ReminderDetailViewController.swift */,
 				78AF82FF1DC7241B00660385 /* CoreDataManager.swift */,
 				7878102D1DC7684E0020BEFC /* LocationManager.swift */,
+				78CD37941DC8F46A00EFEA4F /* AlertManager.swift */,
 				78AF82EE1DC723F200660385 /* Main.storyboard */,
 				78AF82F11DC723F200660385 /* Assets.xcassets */,
 				78AF82F31DC723F200660385 /* LaunchScreen.storyboard */,
@@ -168,6 +171,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78CD37951DC8F46A00EFEA4F /* AlertManager.swift in Sources */,
 				78AF82E61DC723F200660385 /* AppDelegate.swift in Sources */,
 				78AF82E91DC723F200660385 /* ProximityReminders.xcdatamodeld in Sources */,
 				786446451DC736790056F7CB /* ReminderCell.swift in Sources */,

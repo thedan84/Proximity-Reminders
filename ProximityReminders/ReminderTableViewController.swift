@@ -24,13 +24,14 @@ class ReminderTableViewController: UITableViewController {
             self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? ReminderDetailViewController
         }
         
+        coreDataManager.fetchedResultsController.delegate = self
+        
         do {
             try coreDataManager.fetchedResultsController.performFetch()
         } catch {
-            print(error)
+            AlertManager.showAlert(withTitle: "Error while fetching data", andMessage: "\(error.localizedDescription)", inViewController: self)
         }
         
-        coreDataManager.fetchedResultsController.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
