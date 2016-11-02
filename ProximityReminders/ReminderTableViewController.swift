@@ -62,7 +62,23 @@ class ReminderTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-
+        if editingStyle == .delete {
+            let reminder = coreDataManager.fetchedResultsController.object(at: indexPath)
+            coreDataManager.deleteReminder(reminder: reminder)
+        }
+    }
+    
+    // MARK: - Segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetail" {
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                let reminder = coreDataManager.fetchedResultsController.object(at: indexPath)
+                let detailVC = (segue.destination as! UINavigationController).topViewController as! ReminderDetailViewController
+                detailVC.reminder = reminder
+                detailVC.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
+                detailVC.navigationItem.leftItemsSupplementBackButton = true
+            }
+        }
     }
     
     @IBAction func addReminderButtonTapped(_ sender: UIBarButtonItem) {
