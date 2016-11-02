@@ -12,6 +12,7 @@ import CoreLocation
 class LocationManager: NSObject {
     
     let locationManager = CLLocationManager()
+    let geocoder = CLGeocoder()
     var onLocationFix: ((CLLocation) -> Void)?
     
     override init() {
@@ -19,6 +20,13 @@ class LocationManager: NSObject {
         
         locationManager.delegate = self
         locationManager.allowsBackgroundLocationUpdates = true
+    }
+    
+    func getPermission() {
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined, .authorizedWhenInUse, .denied, .restricted: locationManager.requestAlwaysAuthorization()
+        default: locationManager.requestLocation()
+        }
     }
     
     fileprivate func isAuthorized() -> Bool {
@@ -37,6 +45,14 @@ class LocationManager: NSObject {
             locationManager.requestLocation()
         } else {
             locationManager.requestAlwaysAuthorization()
+        }
+    }
+    
+    func searchLocation(with searchString: String, completion: @escaping ([CLPlacemark]?) -> Void) {
+        self.geocoder.geocodeAddressString(searchString) { (placemarks, error) in
+            if let placemarksArray = placemarks {
+                completion(placemarksArray)
+            }
         }
     }
 }

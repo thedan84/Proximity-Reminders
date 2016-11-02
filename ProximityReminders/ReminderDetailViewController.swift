@@ -15,6 +15,7 @@ class ReminderDetailViewController: UITableViewController {
     @IBOutlet weak var locationCell: UITableViewCell!
     
     var reminder: Reminder?
+    let locationManager = LocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,7 @@ class ReminderDetailViewController: UITableViewController {
         } else {
             self.locationSwitch.setOn(true, animated: true)
             self.locationCell.isHidden = false
+            locationManager.getPermission()
         }
     }
     
