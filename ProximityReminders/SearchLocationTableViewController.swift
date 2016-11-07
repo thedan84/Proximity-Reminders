@@ -51,7 +51,6 @@ class SearchLocationTableViewController: UITableViewController, UISearchControll
                 } else {
                     cell.textLabel?.text = "\(streetAddress), \(postalCode) \(city), \(country)"
                 }
-                
             }
         }
         
@@ -59,7 +58,20 @@ class SearchLocationTableViewController: UITableViewController, UISearchControll
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        if let reminder = self.reminder, let placemark = placemarks?[indexPath.row], let location = placemark.location {
+            let locationToSave = Location(entity: Location.entity(), insertInto: coreDataManager.managedObjectContext)
+            
+            locationToSave.latitude = location.coordinate.latitude
+            locationToSave.longitude = location.coordinate.longitude
+            
+            reminder.location = locationToSave
+            
+            coreDataManager.saveContext()
+            
+            let _ = self.navigationController?.popViewController(animated: true)
+            
+            NotificationCenter.default.post(name: NSNotification.Name.init("reloadDetailView"), object: nil)
+        }
     }
     
     func updateSearchResults(for searchController: UISearchController) {

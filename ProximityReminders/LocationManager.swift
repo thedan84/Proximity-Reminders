@@ -55,6 +55,20 @@ class LocationManager: NSObject {
             }
         }
     }
+    
+    func reverseLocation(location: Location, completion: @escaping (_ streetAddress: String, _ houseNumber: String?, _ postalCode: String, _ city: String, _ country: String) -> Void) {
+        let locationToReverse = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        
+        self.geocoder.reverseGeocodeLocation(locationToReverse) { placemarks, error in
+            if let placemark = placemarks?.first {
+                guard let streedAddress = placemark.thoroughfare, let postalCode = placemark.postalCode, let city = placemark.locality, let country = placemark.country else { return }
+                
+                let houseNumber = placemark.subThoroughfare
+                
+                completion(streedAddress, houseNumber, postalCode, city, country)
+            }
+        }
+    }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
