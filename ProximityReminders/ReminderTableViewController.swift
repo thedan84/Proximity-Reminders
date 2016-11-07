@@ -86,7 +86,7 @@ class ReminderTableViewController: UITableViewController {
         
         let saveAction = UIAlertAction(title: "Save", style: .default) { saveAction in
             let textField = alertController.textFields![0] as UITextField
-            self.coreDataManager.saveReminder(withText: textField.text!)
+            self.coreDataManager.saveReminder(withText: textField.text!, location: nil)
         }
         saveAction.isEnabled = false
         

@@ -15,7 +15,9 @@ class SearchLocationTableViewController: UITableViewController, UISearchControll
     
     var placemarks: [CLPlacemark]?
     let locationManager = LocationManager()
+    let coreDataManager = CoreDataManager.sharedManager
     let geocoder = CLGeocoder()
+    var reminder: Reminder?
     
     var searchController: UISearchController!
     
@@ -54,6 +56,10 @@ class SearchLocationTableViewController: UITableViewController, UISearchControll
         }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
     
     func updateSearchResults(for searchController: UISearchController) {

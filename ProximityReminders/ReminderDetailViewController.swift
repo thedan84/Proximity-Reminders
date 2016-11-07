@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ReminderDetailViewController: UITableViewController {
     
@@ -16,13 +17,20 @@ class ReminderDetailViewController: UITableViewController {
     
     var reminder: Reminder?
     let locationManager = LocationManager()
+    let coreDataManager = CoreDataManager.sharedManager
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if reminder?.location != nil {
-            self.locationSwitch.isOn = true
-            self.locationCell.isHidden = false
+        if let reminder = reminder, let text = reminder.text {
+            self.titleLabel.text = text
+            
+            print(reminder)
+            
+            if reminder.location != nil {
+                self.locationSwitch.isOn = true
+                self.locationCell.isHidden = false
+            }
         }
     }
 
@@ -40,6 +48,4 @@ class ReminderDetailViewController: UITableViewController {
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         
     }
-    
 }
-
