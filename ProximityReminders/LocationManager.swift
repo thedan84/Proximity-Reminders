@@ -78,12 +78,12 @@ class LocationManager: NSObject {
         
         for location in locations {
             for region in CLLocationManager().monitoredRegions {
-                guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier, let reminders = location.reminders else { continue }
-                for reminder in reminders {
-                    if let reminder = reminder as? Reminder, let text = reminder.text {
+                guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier, let reminder = location.reminder else { continue }
+//                for reminder in reminders {
+                    if let text = reminder.text {
                         return text
                     }
-                }
+//                }
             }
             
         }

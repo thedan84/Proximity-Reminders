@@ -61,7 +61,7 @@ class ReminderDetailViewController: UITableViewController {
         if let reminder = self.reminder, let location = reminder.location {
             self.configureLocationCell(withLocation: location)
             addRadiusOverlay(forLocation: location)
-            notificationManager.startMonitoring(location: location)
+//            notificationManager.startMonitoring(location: location)
         }
     }
 

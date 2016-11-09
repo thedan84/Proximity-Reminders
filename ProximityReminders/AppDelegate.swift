@@ -8,16 +8,12 @@
 
 import UIKit
 import UserNotifications
-import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
     let coreDataManager = CoreDataManager.sharedManager
-//    let locationManager = LocationManager.sharedManager
-//    let notificationManager = NotificationManager()
-//    let manager = CLLocationManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -28,9 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { granted, error in}
-        
-//        manager.delegate = self
-//        manager.requestAlwaysAuthorization()
 
         return true
     }
@@ -71,35 +64,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         return false
     }
 }
-
-//extension AppDelegate: CLLocationManagerDelegate {
-//    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-//        if region is CLCircularRegion {
-//            handleEvent(forRegion: region)
-//        }
-//    }
-//    
-//    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-//        if region is CLCircularRegion {
-//            handleEvent(forRegion: region)
-//        }
-//    }
-//    
-//    func handleEvent(forRegion region: CLRegion) {
-//        if UIApplication.shared.applicationState == .active {
-//            guard let message = locationManager.reminderText(forRegionIdentifier: region.identifier) else { return }
-//            AlertManager.showAlert(withTitle: nil, andMessage: message, inViewController: (window?.rootViewController)!)
-//        } else {
-//            guard let message = locationManager.reminderText(forRegionIdentifier: region.identifier) else { return }
-//            let content = UNMutableNotificationContent()
-//            content.body = message
-//            content.sound = .default()
-//            
-//            if let trigger = notificationManager.localTrigger {
-//                let notificationRequest = UNNotificationRequest(identifier: "", content: content, trigger: trigger)
-//                let center = UNUserNotificationCenter.current()
-//                center.add(notificationRequest)
-//            }
-//        }
-//    }
-//}
