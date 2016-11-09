@@ -92,10 +92,8 @@ class ReminderDetailViewController: UITableViewController {
     @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
         if let reminder = self.reminder {
             switch sender.selectedSegmentIndex {
-            case 0:
-                notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
-            case 1:
-                notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
+            case 0: notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
+            case 1: notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
             default: break
             }
         }

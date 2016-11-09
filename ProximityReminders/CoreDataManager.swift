@@ -13,7 +13,6 @@ import CoreLocation
 class CoreDataManager {
     
     static let sharedManager = CoreDataManager()
-    let locationManager = LocationManager.sharedManager
     
     // MARK: - Core Data stack
     

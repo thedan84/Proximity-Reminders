@@ -31,17 +31,17 @@ struct NotificationManager {
         }
         return nil
     }
+
+    func startMonitoring(location: Location) {
+        let thisLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        let region = CLCircularRegion(center: thisLocation.coordinate, radius: 50, identifier: location.identifier!)
+        locationManager.locationManager.startMonitoring(for: region)
+    }
     
-//    func startMonitoring(location: Location) {
-//        let thisLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-//        let region = CLCircularRegion(center: thisLocation.coordinate, radius: 50, identifier: location.identifier!)
-//        locationManager.locationManager.startMonitoring(for: region)
-//    }
-//    
-//    func stopMonitoring(location: Location) {
-//        for region in CLLocationManager().monitoredRegions {
-//            guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier else { continue }
-//            locationManager.locationManager.stopMonitoring(for: circularRegion)
-//        }
-//    }
+    func stopMonitoring(location: Location) {
+        for region in CLLocationManager().monitoredRegions {
+            guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier else { continue }
+            locationManager.locationManager.stopMonitoring(for: circularRegion)
+        }
+    }
 }
