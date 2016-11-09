@@ -22,10 +22,9 @@ class ReminderDetailViewController: UITableViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     var reminder: Reminder?
-    let locationManager = LocationManager()
+    let locationManager = LocationManager.sharedManager
     let coreDataManager = CoreDataManager.sharedManager
-    let notificationManager = NotificationManager()
-    var localTrigger: UNLocationNotificationTrigger?
+    var notificationManager = NotificationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +40,6 @@ class ReminderDetailViewController: UITableViewController {
         if let reminder = reminder, let text = reminder.text {
             self.titleLabel.text = text
             
-            print(reminder)
-            
             if let location = reminder.location {
                 self.locationSwitch.isOn = true
                 self.segmentedControlCell.isHidden = false
@@ -50,6 +47,12 @@ class ReminderDetailViewController: UITableViewController {
                 self.mapCell.isHidden = false
                 self.configureLocationCell(withLocation: location)
                 addRadiusOverlay(forLocation: location)
+                
+                switch segmentedControl.selectedSegmentIndex {
+                case 0: notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
+                case 1: notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
+                default: break
+                }
             }
         }
     }
@@ -58,6 +61,7 @@ class ReminderDetailViewController: UITableViewController {
         if let reminder = self.reminder, let location = reminder.location {
             self.configureLocationCell(withLocation: location)
             addRadiusOverlay(forLocation: location)
+            notificationManager.startMonitoring(location: location)
         }
     }
 
@@ -89,13 +93,12 @@ class ReminderDetailViewController: UITableViewController {
         if let reminder = self.reminder {
             switch sender.selectedSegmentIndex {
             case 0:
-                self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
+                notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
             case 1:
-                self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
+                notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
             default: break
             }
         }
-        print(sender.selectedSegmentIndex)
     }
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {

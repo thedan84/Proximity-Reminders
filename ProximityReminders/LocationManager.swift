@@ -11,9 +11,12 @@ import CoreLocation
 
 class LocationManager: NSObject {
     
+    static let sharedManager = LocationManager()
+    
     let locationManager = CLLocationManager()
     let geocoder = CLGeocoder()
     var onLocationFix: ((CLLocation) -> Void)?
+    let coreDataManager = CoreDataManager.sharedManager
     
     override init() {
         super.init()
@@ -69,17 +72,26 @@ class LocationManager: NSObject {
             }
         }
     }
+    
+    func reminderText(forRegionIdentifier regionIdentifer: String) -> String? {
+        let locations = coreDataManager.loadAllLocations()
+        
+        for location in locations {
+            for region in CLLocationManager().monitoredRegions {
+                guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier, let reminders = location.reminders else { continue }
+                for reminder in reminders {
+                    if let reminder = reminder as? Reminder, let text = reminder.text {
+                        return text
+                    }
+                }
+            }
+            
+        }
+        return nil
+    }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        
-    }
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         

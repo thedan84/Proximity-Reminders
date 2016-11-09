@@ -13,7 +13,7 @@ import CoreLocation
 class CoreDataManager {
     
     static let sharedManager = CoreDataManager()
-    let locationManager = LocationManager()
+    let locationManager = LocationManager.sharedManager
     
     // MARK: - Core Data stack
     
@@ -61,6 +61,7 @@ class CoreDataManager {
         
         locationToSave.latitude = location.coordinate.latitude
         locationToSave.longitude = location.coordinate.longitude
+        locationToSave.identifier = NSUUID().uuidString
         
         return locationToSave
     }
@@ -68,6 +69,11 @@ class CoreDataManager {
     func deleteReminder(reminder: Reminder) {
         self.managedObjectContext.delete(reminder)
         self.saveContext()
+    }
+    
+    func loadAllLocations() -> [Location] {
+        let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
+        return try! managedObjectContext.fetch(fetchRequest)
     }
     
     func saveContext () {
