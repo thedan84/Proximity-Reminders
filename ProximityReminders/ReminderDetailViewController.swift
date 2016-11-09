@@ -8,19 +8,35 @@
 
 import UIKit
 import CoreLocation
+import MapKit
+import UserNotifications
 
 class ReminderDetailViewController: UITableViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var locationSwitch: UISwitch!
     @IBOutlet weak var locationCell: UITableViewCell!
+    @IBOutlet weak var segmentedControlCell: UITableViewCell!
+    @IBOutlet weak var mapCell: UITableViewCell!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var mapView: MKMapView!
     
     var reminder: Reminder?
     let locationManager = LocationManager()
     let coreDataManager = CoreDataManager.sharedManager
+    let notificationManager = NotificationManager()
+    var localTrigger: UNLocationNotificationTrigger?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mapView.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadDetailView), name: NSNotification.Name.init("reloadDetailView"), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         if let reminder = reminder, let text = reminder.text {
             self.titleLabel.text = text
@@ -29,29 +45,19 @@ class ReminderDetailViewController: UITableViewController {
             
             if let location = reminder.location {
                 self.locationSwitch.isOn = true
+                self.segmentedControlCell.isHidden = false
                 self.locationCell.isHidden = false
-                locationManager.reverseLocation(location: location) { (streetAddress, houseNumber, postalCode, city, country) in
-                    if let houseNumber = houseNumber {
-                        self.locationCell.textLabel?.text = "\(streetAddress) \(houseNumber), \(postalCode), \(city), \(country)"
-                    } else {
-                        self.locationCell.textLabel?.text = "\(streetAddress), \(postalCode), \(city), \(country)"
-                    }
-                }
+                self.mapCell.isHidden = false
+                self.configureLocationCell(withLocation: location)
+                addRadiusOverlay(forLocation: location)
             }
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadDetailView), name: NSNotification.Name.init("reloadDetailView"), object: nil)
     }
     
     func reloadDetailView() {
         if let reminder = self.reminder, let location = reminder.location {
-            locationManager.reverseLocation(location: location) { (streetAddress, houseNumber, postalCode, city, country) in
-                if let houseNumber = houseNumber {
-                    self.locationCell.textLabel?.text = "\(streetAddress) \(houseNumber), \(postalCode) \(city), \(country)"
-                } else {
-                    self.locationCell.textLabel?.text = "\(streetAddress), \(postalCode) \(city), \(country)"
-                }
-            }
+            self.configureLocationCell(withLocation: location)
+            addRadiusOverlay(forLocation: location)
         }
     }
 
@@ -59,6 +65,8 @@ class ReminderDetailViewController: UITableViewController {
         if sender.isOn {
             self.locationSwitch.setOn(false, animated: true)
             self.locationCell.isHidden = true
+            self.segmentedControlCell.isHidden = true
+            self.mapCell.isHidden = true
             
             if let reminder = self.reminder {
                 reminder.location = nil
@@ -68,9 +76,26 @@ class ReminderDetailViewController: UITableViewController {
         } else {
             self.locationSwitch.setOn(true, animated: true)
             self.locationCell.isHidden = false
+            self.segmentedControlCell.isHidden = false
+            self.mapCell.isHidden = false
+            
             locationManager.getPermission()
+            
             self.locationCell.textLabel?.text = "Search location"
         }
+    }
+    
+    @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
+        if let reminder = self.reminder {
+            switch sender.selectedSegmentIndex {
+            case 0:
+                self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
+            case 1:
+                self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
+            default: break
+            }
+        }
+        print(sender.selectedSegmentIndex)
     }
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
@@ -84,5 +109,59 @@ class ReminderDetailViewController: UITableViewController {
                 searchVC.reminder = reminder
             }
         }
+    }
+    
+    fileprivate func configureLocationCell(withLocation location: Location) {
+        locationManager.reverseLocation(location: location) { (streetAddress, houseNumber, postalCode, city, country) in
+            if let houseNumber = houseNumber {
+                self.locationCell.textLabel?.text = "\(streetAddress) \(houseNumber), \(postalCode), \(city), \(country)"
+            } else {
+                self.locationCell.textLabel?.text = "\(streetAddress), \(postalCode), \(city), \(country)"
+            }
+        }
+        addMapAnnotation()
+    }
+}
+
+extension ReminderDetailViewController: MKMapViewDelegate {
+    func addMapAnnotation() {
+        removeMapAnnotations()
+        
+        let point = MKPointAnnotation()
+        if let reminder = self.reminder, let location = reminder.location {
+            let mapLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+            let coordinate = mapLocation.coordinate
+            point.coordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            
+            var region = MKCoordinateRegion()
+            region.center = mapLocation.coordinate
+            region.span.latitudeDelta = 0.01
+            region.span.longitudeDelta = 0.01
+            mapView.setRegion(region, animated: true)
+            mapView.addAnnotation(point)
+        }
+    }
+    
+    func removeMapAnnotations() {
+        if mapView.annotations.count != 0 {
+            for annotation in mapView.annotations {
+                mapView.removeAnnotation(annotation)
+            }
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay is MKCircle {
+            let circleRenderer = MKCircleRenderer(overlay: overlay)
+            circleRenderer.lineWidth = 2.0
+            circleRenderer.strokeColor = .blue
+            return circleRenderer
+        }
+        return MKOverlayRenderer(overlay: overlay)
+    }
+    
+    func addRadiusOverlay(forLocation location: Location) {
+        let thisLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        mapView.add(MKCircle(center: thisLocation.coordinate, radius: 50))
     }
 }

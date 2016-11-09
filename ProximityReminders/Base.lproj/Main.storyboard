@@ -188,6 +188,50 @@
                                             <segue destination="QU3-Ai-XXU" kind="show" identifier="showSearchLocation" id="aqX-jB-2d1"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="DZA-Z9-WXB">
+                                        <rect key="frame" x="0.0" y="203" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DZA-Z9-WXB" id="NPp-r6-hOG">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="j6s-qa-0cy">
+                                                    <rect key="frame" x="8" y="8" width="359" height="29"/>
+                                                    <segments>
+                                                        <segment title="Arrive"/>
+                                                        <segment title="Leave"/>
+                                                    </segments>
+                                                    <connections>
+                                                        <action selector="segmentedControlTapped:" destination="uy7-fi-8F4" eventType="valueChanged" id="bL6-IU-UqC"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="j6s-qa-0cy" secondAttribute="trailing" constant="8" id="eSu-QV-7m1"/>
+                                                <constraint firstItem="j6s-qa-0cy" firstAttribute="centerY" secondItem="NPp-r6-hOG" secondAttribute="centerY" id="hKi-RR-crn"/>
+                                                <constraint firstItem="j6s-qa-0cy" firstAttribute="leading" secondItem="NPp-r6-hOG" secondAttribute="leading" constant="8" id="rrm-Fg-5AU"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="334" id="8SQ-uy-EOl">
+                                        <rect key="frame" x="0.0" y="247" width="375" height="334"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8SQ-uy-EOl" id="kZ3-FE-LvC">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="333"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="peG-5R-tKk">
+                                                    <rect key="frame" x="8" y="8" width="359" height="317.5"/>
+                                                </mapView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="peG-5R-tKk" firstAttribute="top" secondItem="kZ3-FE-LvC" secondAttribute="topMargin" id="AYU-Rz-jp0"/>
+                                                <constraint firstItem="peG-5R-tKk" firstAttribute="bottom" secondItem="kZ3-FE-LvC" secondAttribute="bottomMargin" id="Lni-1J-wRX"/>
+                                                <constraint firstItem="peG-5R-tKk" firstAttribute="leading" secondItem="kZ3-FE-LvC" secondAttribute="leadingMargin" id="RNn-pA-gOV"/>
+                                                <constraint firstItem="peG-5R-tKk" firstAttribute="trailing" secondItem="kZ3-FE-LvC" secondAttribute="trailingMargin" id="V06-7l-25Q"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -206,6 +250,10 @@
                     <connections>
                         <outlet property="locationCell" destination="bCe-vz-SQf" id="4Zt-zL-9tv"/>
                         <outlet property="locationSwitch" destination="DOy-ff-fmh" id="OS8-u2-Xae"/>
+                        <outlet property="mapCell" destination="8SQ-uy-EOl" id="DST-lh-D27"/>
+                        <outlet property="mapView" destination="peG-5R-tKk" id="Ole-eg-doB"/>
+                        <outlet property="segmentedControl" destination="j6s-qa-0cy" id="Jei-jw-TTh"/>
+                        <outlet property="segmentedControlCell" destination="DZA-Z9-WXB" id="3MB-ph-A56"/>
                         <outlet property="titleLabel" destination="eNj-F1-ZAI" id="KmD-03-gB5"/>
                     </connections>
                 </tableViewController>

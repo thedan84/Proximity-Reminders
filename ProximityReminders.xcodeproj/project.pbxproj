@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		781D2C691DD10B31007CAEE6 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781D2C681DD10B31007CAEE6 /* NotificationManager.swift */; };
 		786446451DC736790056F7CB /* ReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 786446441DC736790056F7CB /* ReminderCell.swift */; };
 		7878102E1DC7684E0020BEFC /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7878102D1DC7684E0020BEFC /* LocationManager.swift */; };
 		78AF82E61DC723F200660385 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AF82E51DC723F200660385 /* AppDelegate.swift */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		781D2C681DD10B31007CAEE6 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		786446441DC736790056F7CB /* ReminderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderCell.swift; sourceTree = "<group>"; };
 		7878102D1DC7684E0020BEFC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		78AF82E21DC723F200660385 /* ProximityReminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProximityReminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +84,7 @@
 				78AF82FF1DC7241B00660385 /* CoreDataManager.swift */,
 				7878102D1DC7684E0020BEFC /* LocationManager.swift */,
 				78CD37941DC8F46A00EFEA4F /* AlertManager.swift */,
+				781D2C681DD10B31007CAEE6 /* NotificationManager.swift */,
 				78AF82EE1DC723F200660385 /* Main.storyboard */,
 				78AF82F11DC723F200660385 /* Assets.xcassets */,
 				78AF82F31DC723F200660385 /* LaunchScreen.storyboard */,
@@ -176,6 +179,7 @@
 			files = (
 				78CD37951DC8F46A00EFEA4F /* AlertManager.swift in Sources */,
 				78AF82E61DC723F200660385 /* AppDelegate.swift in Sources */,
+				781D2C691DD10B31007CAEE6 /* NotificationManager.swift in Sources */,
 				78AF82E91DC723F200660385 /* ProximityReminders.xcdatamodeld in Sources */,
 				786446451DC736790056F7CB /* ReminderCell.swift in Sources */,
 				7878102E1DC7684E0020BEFC /* LocationManager.swift in Sources */,
