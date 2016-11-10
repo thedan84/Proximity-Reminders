@@ -22,9 +22,11 @@ class ReminderDetailViewController: UITableViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     var reminder: Reminder?
-    let locationManager = LocationManager.sharedManager
+    let locationManager = LocationManager()
     let coreDataManager = CoreDataManager.sharedManager
     var notificationManager = NotificationManager()
+    var localTrigger: UNLocationNotificationTrigger?
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +51,8 @@ class ReminderDetailViewController: UITableViewController {
                 addRadiusOverlay(forLocation: location)
                 
                 switch segmentedControl.selectedSegmentIndex {
-                case 0: notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
-                case 1: notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
+                case 0: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
+                case 1: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
                 default: break
                 }
             }
@@ -58,10 +60,11 @@ class ReminderDetailViewController: UITableViewController {
     }
     
     func reloadDetailView() {
-        if let reminder = self.reminder, let location = reminder.location {
+        if let reminder = self.reminder, let location = reminder.location, let locationTrigger = localTrigger {
             self.configureLocationCell(withLocation: location)
             addRadiusOverlay(forLocation: location)
-//            notificationManager.startMonitoring(location: location)
+            appDelegate.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
+//            notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
         }
     }
 
@@ -83,7 +86,9 @@ class ReminderDetailViewController: UITableViewController {
             self.segmentedControlCell.isHidden = false
             self.mapCell.isHidden = false
             
-            locationManager.getPermission()
+            if !locationManager.isAuthorized() {
+                CLLocationManager().requestAlwaysAuthorization()
+            }
             
             self.locationCell.textLabel?.text = "Search location"
         }
@@ -92,8 +97,8 @@ class ReminderDetailViewController: UITableViewController {
     @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
         if let reminder = self.reminder {
             switch sender.selectedSegmentIndex {
-            case 0: notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
-            case 1: notificationManager.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
+            case 0: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
+            case 1: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
             default: break
             }
         }

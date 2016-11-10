@@ -11,8 +11,6 @@ import CoreLocation
 
 class LocationManager: NSObject {
     
-    static let sharedManager = LocationManager()
-    
     let locationManager = CLLocationManager()
     let geocoder = CLGeocoder()
     var onLocationFix: ((CLLocation) -> Void)?
@@ -25,14 +23,7 @@ class LocationManager: NSObject {
         locationManager.allowsBackgroundLocationUpdates = true
     }
     
-    func getPermission() {
-        switch CLLocationManager.authorizationStatus() {
-        case .notDetermined, .authorizedWhenInUse, .denied, .restricted: locationManager.requestAlwaysAuthorization()
-        default: locationManager.requestLocation()
-        }
-    }
-    
-    fileprivate func isAuthorized() -> Bool {
+    func isAuthorized() -> Bool {
         var isAuthorized = false
         
         switch CLLocationManager.authorizationStatus() {
@@ -41,14 +32,6 @@ class LocationManager: NSObject {
         }
         
         return isAuthorized
-    }
-    
-    func getLocation() {
-        if self.isAuthorized() {
-            locationManager.requestLocation()
-        } else {
-            locationManager.requestAlwaysAuthorization()
-        }
     }
     
     func searchLocation(with searchString: String, completion: @escaping ([CLPlacemark]?) -> Void) {
@@ -89,6 +72,19 @@ class LocationManager: NSObject {
         }
         return nil
     }
+    
+    func startMonitoring(location: Location) {
+        let thisLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        let region = CLCircularRegion(center: thisLocation.coordinate, radius: 50, identifier: location.identifier!)
+        self.locationManager.startMonitoring(for: region)
+    }
+    
+    func stopMonitoring(location: Location) {
+        for region in CLLocationManager().monitoredRegions {
+            guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier else { continue }
+            self.locationManager.stopMonitoring(for: circularRegion)
+        }
+    }
 }
 
 extension LocationManager: CLLocationManagerDelegate {
@@ -98,9 +94,5 @@ extension LocationManager: CLLocationManagerDelegate {
         if let onLocationFix = onLocationFix {
             onLocationFix(location)
         }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        
     }
 }

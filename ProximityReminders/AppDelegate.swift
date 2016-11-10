@@ -8,12 +8,16 @@
 
 import UIKit
 import UserNotifications
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
     let coreDataManager = CoreDataManager.sharedManager
+    let locationManager = CLLocationManager()
+    let notificationManager = NotificationManager()
+    let localManager = LocationManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -24,8 +28,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { granted, error in}
+        center.delegate = self
+        
+        let action = UNNotificationAction(identifier: "complete", title: "Complete", options: [])
+        let category = UNNotificationCategory(identifier: "locationCategory", actions: [action], intentIdentifiers: [], options: [])
+        UNUserNotificationCenter.current().setNotificationCategories([category])
+        
+        locationManager.delegate = self
 
         return true
+    }
+    
+    func scheduleNewNotification(withReminder reminder: Reminder, locationTrigger trigger: UNLocationNotificationTrigger?) {
+        if let text = reminder.text, let notificationTrigger = trigger /*, let location = reminder.location*/ {
+            let content = UNMutableNotificationContent()
+            content.body = text
+            content.sound = UNNotificationSound.default()
+            let request = UNNotificationRequest(identifier: "\(reminder.self)", content: content, trigger: notificationTrigger)
+            let center = UNUserNotificationCenter.current()
+            center.add(request)
+//            localManager.startMonitoring(location: location)
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -62,5 +85,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             return true
         }
         return false
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.actionIdentifier == "complete" {
+            
+        }
+    }
+}
+
+extension AppDelegate: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("Entered region: \(region.identifier)")
     }
 }

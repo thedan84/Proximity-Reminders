@@ -12,7 +12,7 @@ import CoreLocation
 
 struct NotificationManager {
     let notificationCenter = UNUserNotificationCenter.current()
-    let locationManager = LocationManager.sharedManager
+    let locationManager = LocationManager()
     var localTrigger: UNLocationNotificationTrigger?
     
     func addLocationTrigger(forReminder reminder: Reminder, whenLeaving: Bool) -> UNLocationNotificationTrigger? {
@@ -32,16 +32,18 @@ struct NotificationManager {
         return nil
     }
 
-    func startMonitoring(location: Location) {
-        let thisLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        let region = CLCircularRegion(center: thisLocation.coordinate, radius: 50, identifier: location.identifier!)
-        locationManager.locationManager.startMonitoring(for: region)
-    }
-    
-    func stopMonitoring(location: Location) {
-        for region in CLLocationManager().monitoredRegions {
-            guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier else { continue }
-            locationManager.locationManager.stopMonitoring(for: circularRegion)
+    func scheduleNewNotification(withReminder reminder: Reminder, locationTrigger trigger: UNLocationNotificationTrigger?) {
+        if let text = reminder.text, let notificationTrigger = trigger, let location = reminder.location {
+            let content = UNMutableNotificationContent()
+            content.body = text
+            content.sound = UNNotificationSound.default()
+            let request = UNNotificationRequest(identifier: "\(reminder.self)", content: content, trigger: notificationTrigger)
+            notificationCenter.add(request)
+            locationManager.startMonitoring(location: location)
         }
     }
+    
+//    func handleNotification(forRegion region: CLRegion) {
+//        
+//    }
 }

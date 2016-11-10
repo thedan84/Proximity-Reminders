@@ -14,7 +14,7 @@ fileprivate let cellIdentifier = "searchCell"
 class SearchLocationTableViewController: UITableViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
     
     var placemarks: [CLPlacemark]?
-    let locationManager = LocationManager.sharedManager
+    let locationManager = LocationManager()
     let coreDataManager = CoreDataManager.sharedManager
     let geocoder = CLGeocoder()
     var reminder: Reminder?
