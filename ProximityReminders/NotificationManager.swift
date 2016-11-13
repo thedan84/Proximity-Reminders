@@ -13,12 +13,12 @@ import CoreLocation
 struct NotificationManager {
     let notificationCenter = UNUserNotificationCenter.current()
     let locationManager = LocationManager()
-    var localTrigger: UNLocationNotificationTrigger?
+//    var localTrigger: UNLocationNotificationTrigger?
     
     func addLocationTrigger(forReminder reminder: Reminder, whenLeaving: Bool) -> UNLocationNotificationTrigger? {
         if let location = reminder.location {
             let center = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-            let region = CLCircularRegion(center: center, radius: 50, identifier: reminder.text!)
+            let region = CLCircularRegion(center: center, radius: 50, identifier: location.identifier!)
             switch whenLeaving {
             case true:
                 region.notifyOnExit = true

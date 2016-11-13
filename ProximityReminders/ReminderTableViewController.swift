@@ -60,12 +60,25 @@ class ReminderTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let reminder = coreDataManager.fetchedResultsController.object(at: indexPath)
-            coreDataManager.deleteReminder(reminder: reminder)
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { action, indexPath in
+            let reminder = self.coreDataManager.fetchedResultsController.object(at: indexPath)
+            self.coreDataManager.deleteReminder(reminder: reminder)
         }
+        
+        let completeAction = UITableViewRowAction(style: .normal, title: "Complete") { action, indexPath in
+            let reminder = self.coreDataManager.fetchedResultsController.object(at: indexPath)
+            if reminder.isCompleted {
+                reminder.isCompleted = false
+            } else {
+                reminder.isCompleted = true
+            }
+            
+            self.coreDataManager.saveContext()
+        }
+        
+        return [deleteAction, completeAction]
     }
     
     // MARK: - Segues

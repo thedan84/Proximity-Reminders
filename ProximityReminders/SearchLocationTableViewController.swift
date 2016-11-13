@@ -63,6 +63,7 @@ class SearchLocationTableViewController: UITableViewController, UISearchControll
             
             locationToSave.latitude = location.coordinate.latitude
             locationToSave.longitude = location.coordinate.longitude
+            locationToSave.identifier = String(describing: Date())
             
             reminder.location = locationToSave
             

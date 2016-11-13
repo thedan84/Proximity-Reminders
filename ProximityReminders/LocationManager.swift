@@ -34,10 +34,18 @@ class LocationManager: NSObject {
         return isAuthorized
     }
     
+    func getLocation() {
+        if self.isAuthorized() {
+            locationManager.requestLocation()
+        }
+    }
+    
     func searchLocation(with searchString: String, completion: @escaping ([CLPlacemark]?) -> Void) {
         self.geocoder.geocodeAddressString(searchString) { (placemarks, error) in
             if let placemarksArray = placemarks {
-                completion(placemarksArray)
+                OperationQueue.main.addOperation {
+                    completion(placemarksArray)
+                }
             }
         }
     }

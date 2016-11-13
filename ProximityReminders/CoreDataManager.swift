@@ -43,7 +43,7 @@ class CoreDataManager {
     // MARK: - Core Data Saving support
     
     func saveReminder(withText text: String, location: CLLocation?) {
-        let reminder = Reminder(context: self.managedObjectContext)
+        let reminder = Reminder(entity: Reminder.entity(), insertInto: self.managedObjectContext)
         
         reminder.text = text
         reminder.date = NSDate()
@@ -56,11 +56,11 @@ class CoreDataManager {
     }
     
     fileprivate func saveLocation(location: CLLocation) -> Location {
-        let locationToSave = Location(context: self.managedObjectContext)
+        let locationToSave = Location(entity: Location.entity(), insertInto: self.managedObjectContext)
         
         locationToSave.latitude = location.coordinate.latitude
         locationToSave.longitude = location.coordinate.longitude
-        locationToSave.identifier = NSUUID().uuidString
+        locationToSave.identifier = String(describing: Date())
         
         return locationToSave
     }

@@ -25,7 +25,7 @@ class ReminderDetailViewController: UITableViewController {
     let locationManager = LocationManager()
     let coreDataManager = CoreDataManager.sharedManager
     var notificationManager = NotificationManager()
-    var localTrigger: UNLocationNotificationTrigger?
+//    var localTrigger: UNLocationNotificationTrigger?
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func viewDidLoad() {
@@ -50,21 +50,23 @@ class ReminderDetailViewController: UITableViewController {
                 self.configureLocationCell(withLocation: location)
                 addRadiusOverlay(forLocation: location)
                 
-                switch segmentedControl.selectedSegmentIndex {
-                case 0: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
-                case 1: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
-                default: break
-                }
+//                switch segmentedControl.selectedSegmentIndex {
+//                case 0: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
+//                case 1: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
+//                default: break
+//                }
             }
         }
     }
     
     func reloadDetailView() {
-        if let reminder = self.reminder, let location = reminder.location, let locationTrigger = localTrigger {
+        if let reminder = self.reminder, let location = reminder.location/*, let locationTrigger = localTrigger*/ {
             self.configureLocationCell(withLocation: location)
             addRadiusOverlay(forLocation: location)
-            appDelegate.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
-//            notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
+//            reminder.location = location
+//            coreDataManager.saveContext()
+//            let locationTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: segmentedControl.selectedSegmentIndex == 0 ? false : true)
+//            appDelegate.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
         }
     }
 
@@ -88,6 +90,8 @@ class ReminderDetailViewController: UITableViewController {
             
             if !locationManager.isAuthorized() {
                 CLLocationManager().requestAlwaysAuthorization()
+            } else {
+                locationManager.getLocation()
             }
             
             self.locationCell.textLabel?.text = "Search location"
@@ -95,16 +99,20 @@ class ReminderDetailViewController: UITableViewController {
     }
     
     @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
-        if let reminder = self.reminder {
-            switch sender.selectedSegmentIndex {
-            case 0: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
-            case 1: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
-            default: break
-            }
-        }
+//        if let reminder = self.reminder {
+//            switch sender.selectedSegmentIndex {
+//            case 0: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
+//            case 1: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
+//            default: break
+//            }
+//        }
     }
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
+        if let reminder = reminder {
+            let locationTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: segmentedControl.selectedSegmentIndex == 0 ? false : true)
+            appDelegate.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
+        }
         let _ = self.navigationController?.popViewController(animated: true)
     }
     

@@ -24,5 +24,10 @@ class ReminderCell: UITableViewCell {
     
     func configure(withReminder reminder: Reminder) {
         self.textLabel?.text = reminder.text
+        if reminder.isCompleted {
+            self.accessoryType = .checkmark
+        } else {
+            self.accessoryType = .none
+        }
     }
 }
