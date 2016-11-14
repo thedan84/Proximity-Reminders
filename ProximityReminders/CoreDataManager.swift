@@ -40,7 +40,7 @@ class CoreDataManager {
         return controller
     }()
         
-    // MARK: - Core Data Saving support
+    // MARK: - Save reminder
     
     func saveReminder(withText text: String, location: CLLocation?) {
         let reminder = Reminder(entity: Reminder.entity(), insertInto: self.managedObjectContext)
@@ -55,6 +55,7 @@ class CoreDataManager {
         self.saveContext()
     }
     
+    //MARK: - Helper method to save location
     fileprivate func saveLocation(location: CLLocation) -> Location {
         let locationToSave = Location(entity: Location.entity(), insertInto: self.managedObjectContext)
         
@@ -65,14 +66,10 @@ class CoreDataManager {
         return locationToSave
     }
     
+    //MARK: - Delete reminder
     func deleteReminder(reminder: Reminder) {
         self.managedObjectContext.delete(reminder)
         self.saveContext()
-    }
-    
-    func loadAllLocations() -> [Location] {
-        let fetchRequest: NSFetchRequest<Location> = Location.fetchRequest()
-        return try! managedObjectContext.fetch(fetchRequest)
     }
     
     func saveContext () {

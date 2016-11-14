@@ -10,7 +10,7 @@ import UIKit
 
 class ReminderCell: UITableViewCell {
         
-    
+    //MARK: - View lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -22,6 +22,7 @@ class ReminderCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    //MARK: - Cell configuration
     func configure(withReminder reminder: Reminder) {
         self.textLabel?.text = reminder.text
         if reminder.isCompleted {

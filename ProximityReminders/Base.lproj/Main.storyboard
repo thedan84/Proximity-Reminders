@@ -29,7 +29,7 @@
         <!--Master-->
         <scene sceneID="smW-Zh-WAh">
             <objects>
-                <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="ReminderTableViewController" customModule="ProximityReminders" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ReminderTableVC" title="Master" useStoryboardIdentifierAsRestorationIdentifier="YES" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="ReminderTableViewController" customModule="ProximityReminders" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="r7i-6Z-zg0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -236,13 +236,7 @@
                             <outlet property="delegate" destination="uy7-fi-8F4" id="PxA-Uf-Oan"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="2xS-4B-dEt">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Utq-4n-axH">
-                            <connections>
-                                <action selector="doneButtonTapped:" destination="uy7-fi-8F4" id="5Lf-bG-XLS"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="2xS-4B-dEt"/>
                     <connections>
                         <outlet property="locationCell" destination="bCe-vz-SQf" id="4Zt-zL-9tv"/>
                         <outlet property="locationSwitch" destination="DOy-ff-fmh" id="OS8-u2-Xae"/>
@@ -287,6 +281,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="liq-0b-hCz"/>
+        <segue reference="6S0-TO-JiA"/>
     </inferredMetricsTieBreakers>
 </document>

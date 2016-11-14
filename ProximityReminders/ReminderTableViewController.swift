@@ -8,14 +8,18 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 fileprivate let cellIdentifier = "reminderCell"
 
 class ReminderTableViewController: UITableViewController {
 
+    //MARK: - Properties
     var detailViewController: ReminderDetailViewController? = nil
     let coreDataManager = CoreDataManager.sharedManager
+    let notificationCenter = UNUserNotificationCenter.current()
 
+    //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,10 +73,10 @@ class ReminderTableViewController: UITableViewController {
         
         let completeAction = UITableViewRowAction(style: .normal, title: "Complete") { action, indexPath in
             let reminder = self.coreDataManager.fetchedResultsController.object(at: indexPath)
-            if reminder.isCompleted {
-                reminder.isCompleted = false
-            } else {
-                reminder.isCompleted = true
+            reminder.isCompleted = true
+            
+            if let location = reminder.location, let identifier = location.identifier {
+                self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
             }
             
             self.coreDataManager.saveContext()
@@ -94,6 +98,7 @@ class ReminderTableViewController: UITableViewController {
         }
     }
     
+    //MARK: - IBActions
     @IBAction func addReminderButtonTapped(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "New Reminder", message: nil, preferredStyle: .alert)
         
@@ -120,6 +125,7 @@ class ReminderTableViewController: UITableViewController {
     
 }
 
+//MARK: - NSFetchedResultsControllerDelegate
 extension ReminderTableViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.reloadData()

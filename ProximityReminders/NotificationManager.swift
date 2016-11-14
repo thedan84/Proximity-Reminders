@@ -11,12 +11,15 @@ import UserNotifications
 import CoreLocation
 
 struct NotificationManager {
+    
+    //MARK: - Properties
     let notificationCenter = UNUserNotificationCenter.current()
     
+    //MARK: - Add location trigger
     func addLocationTrigger(forReminder reminder: Reminder, whenLeaving: Bool) -> UNLocationNotificationTrigger? {
-        if let location = reminder.location {
+        if let location = reminder.location, let identifier = location.identifier {
             let center = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-            let region = CLCircularRegion(center: center, radius: 50, identifier: location.identifier!)
+            let region = CLCircularRegion(center: center, radius: 50, identifier: identifier)
             switch whenLeaving {
             case true:
                 region.notifyOnExit = true
@@ -30,12 +33,13 @@ struct NotificationManager {
         return nil
     }
 
+    //MARK: - Schedule notification
     func scheduleNewNotification(withReminder reminder: Reminder, locationTrigger trigger: UNLocationNotificationTrigger?) {
-        if let text = reminder.text, let notificationTrigger = trigger {
+        if let text = reminder.text, let location = reminder.location, let identifier = location.identifier, let notificationTrigger = trigger {
             let content = UNMutableNotificationContent()
             content.body = text
             content.sound = UNNotificationSound.default()
-            let request = UNNotificationRequest(identifier: "\(reminder.self)", content: content, trigger: notificationTrigger)
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: notificationTrigger)
             notificationCenter.add(request)
         }
     }

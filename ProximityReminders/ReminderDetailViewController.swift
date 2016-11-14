@@ -13,6 +13,7 @@ import UserNotifications
 
 class ReminderDetailViewController: UITableViewController {
     
+    //MARK: - Properties
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var locationSwitch: UISwitch!
     @IBOutlet weak var locationCell: UITableViewCell!
@@ -26,6 +27,7 @@ class ReminderDetailViewController: UITableViewController {
     let coreDataManager = CoreDataManager.sharedManager
     var notificationManager = NotificationManager()
     
+    //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,13 +53,17 @@ class ReminderDetailViewController: UITableViewController {
         }
     }
     
+    //MARK: - Helper method for NotificationCenter
     func reloadDetailView() {
         if let reminder = self.reminder, let location = reminder.location {
             self.configureLocationCell(withLocation: location)
             addRadiusOverlay(forLocation: location)
+            let locationTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: segmentedControl.selectedSegmentIndex == 0 ? false : true)
+            self.notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
         }
     }
 
+    //MARK: - IBActions
     @IBAction func locationSwitchTapped(_ sender: UISwitch) {
         if sender.isOn {
             self.locationSwitch.setOn(false, animated: true)
@@ -79,13 +85,7 @@ class ReminderDetailViewController: UITableViewController {
         }
     }
     
-    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        if let reminder = reminder {
-            let locationTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: segmentedControl.selectedSegmentIndex == 0 ? false : true)
-            self.notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
-        }
-    }
-    
+    //MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showSearchLocation" {
             let searchVC = segue.destination as! SearchLocationTableViewController
@@ -95,6 +95,7 @@ class ReminderDetailViewController: UITableViewController {
         }
     }
     
+    //MARK: - Cell configuration
     fileprivate func configureLocationCell(withLocation location: Location) {
         locationManager.reverseLocation(location: location) { (streetAddress, houseNumber, postalCode, city, country) in
             if let houseNumber = houseNumber {
@@ -107,7 +108,9 @@ class ReminderDetailViewController: UITableViewController {
     }
 }
 
+//MARK: - MKMapViewDelegate
 extension ReminderDetailViewController: MKMapViewDelegate {
+    //Add map annotation
     func addMapAnnotation() {
         removeMapAnnotations()
         
@@ -126,6 +129,7 @@ extension ReminderDetailViewController: MKMapViewDelegate {
         }
     }
     
+    //Remove map annotation
     func removeMapAnnotations() {
         if mapView.annotations.count != 0 {
             for annotation in mapView.annotations {
@@ -134,6 +138,7 @@ extension ReminderDetailViewController: MKMapViewDelegate {
         }
     }
     
+    //Render map overlay
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKCircle {
             let circleRenderer = MKCircleRenderer(overlay: overlay)
@@ -144,6 +149,7 @@ extension ReminderDetailViewController: MKMapViewDelegate {
         return MKOverlayRenderer(overlay: overlay)
     }
     
+    //Display map overlay
     func addRadiusOverlay(forLocation location: Location) {
         let thisLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
         mapView.add(MKCircle(center: thisLocation.coordinate, radius: 50))

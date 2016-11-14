@@ -13,6 +13,7 @@ fileprivate let cellIdentifier = "searchCell"
 
 class SearchLocationTableViewController: UITableViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
     
+    //MARK: - Properties
     var placemarks: [CLPlacemark]?
     let locationManager = LocationManager()
     let coreDataManager = CoreDataManager.sharedManager
@@ -21,6 +22,7 @@ class SearchLocationTableViewController: UITableViewController, UISearchControll
     
     var searchController: UISearchController!
     
+    //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -75,13 +77,16 @@ class SearchLocationTableViewController: UITableViewController, UISearchControll
         }
     }
     
+    //MARK: - UISearchControllerDelegate
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
         
         self.filterAddress(forSearchString: text)
     }
     
+    //MARK: - Filer address
     fileprivate func filterAddress(forSearchString searchString: String) {
+        self.placemarks = nil
         locationManager.searchLocation(with: searchString, completion: { (placemarks) in
             if let placemarksArray = placemarks {
                 self.placemarks = placemarksArray

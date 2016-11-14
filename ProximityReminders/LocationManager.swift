@@ -11,18 +11,20 @@ import CoreLocation
 
 class LocationManager: NSObject {
     
+    //MARK: - Properties
     let locationManager = CLLocationManager()
     let geocoder = CLGeocoder()
     var onLocationFix: ((CLLocation) -> Void)?
     let coreDataManager = CoreDataManager.sharedManager
     
+    //MARK: - Initialization
     override init() {
         super.init()
         
-//        locationManager.delegate = self
         locationManager.allowsBackgroundLocationUpdates = true
     }
     
+    //MARK: - Search location
     func searchLocation(with searchString: String, completion: @escaping ([CLPlacemark]?) -> Void) {
         self.geocoder.geocodeAddressString(searchString) { (placemarks, error) in
             if let placemarksArray = placemarks {
@@ -33,6 +35,7 @@ class LocationManager: NSObject {
         }
     }
     
+    //MARK: - Reverse location
     func reverseLocation(location: Location, completion: @escaping (_ streetAddress: String, _ houseNumber: String?, _ postalCode: String, _ city: String, _ country: String) -> Void) {
         let locationToReverse = CLLocation(latitude: location.latitude, longitude: location.longitude)
         
@@ -46,31 +49,4 @@ class LocationManager: NSObject {
             }
         }
     }
-    
-    func reminderText(forRegionIdentifier regionIdentifer: String) -> String? {
-        let locations = coreDataManager.loadAllLocations()
-        
-        for location in locations {
-            for region in CLLocationManager().monitoredRegions {
-                guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier, let reminders = location.reminders else { continue }
-                for reminder in reminders {
-                    if let text = (reminder as! Reminder).text {
-                        return text
-                    }
-                }
-            }
-            
-        }
-        return nil
-    }
 }
-
-//extension LocationManager: CLLocationManagerDelegate {
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        guard let location = locations.first else { return }
-//        
-//        if let onLocationFix = onLocationFix {
-//            onLocationFix(location)
-//        }
-//    }
-//}
