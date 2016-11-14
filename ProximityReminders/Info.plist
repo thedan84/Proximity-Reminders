@@ -20,7 +20,7 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationAlwaysUsageDescription</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Please allow access to your location, even when the app is not running.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>We need your location data.</string>

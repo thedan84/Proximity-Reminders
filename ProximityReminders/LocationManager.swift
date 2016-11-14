@@ -19,25 +19,8 @@ class LocationManager: NSObject {
     override init() {
         super.init()
         
-        locationManager.delegate = self
+//        locationManager.delegate = self
         locationManager.allowsBackgroundLocationUpdates = true
-    }
-    
-    func isAuthorized() -> Bool {
-        var isAuthorized = false
-        
-        switch CLLocationManager.authorizationStatus() {
-        case .notDetermined, .denied, .restricted, .authorizedWhenInUse: isAuthorized = false
-        case .authorizedAlways: isAuthorized = true
-        }
-        
-        return isAuthorized
-    }
-    
-    func getLocation() {
-        if self.isAuthorized() {
-            locationManager.requestLocation()
-        }
     }
     
     func searchLocation(with searchString: String, completion: @escaping ([CLPlacemark]?) -> Void) {
@@ -80,27 +63,14 @@ class LocationManager: NSObject {
         }
         return nil
     }
-    
-    func startMonitoring(location: Location) {
-        let thisLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        let region = CLCircularRegion(center: thisLocation.coordinate, radius: 50, identifier: location.identifier!)
-        self.locationManager.startMonitoring(for: region)
-    }
-    
-    func stopMonitoring(location: Location) {
-        for region in CLLocationManager().monitoredRegions {
-            guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier else { continue }
-            self.locationManager.stopMonitoring(for: circularRegion)
-        }
-    }
 }
 
-extension LocationManager: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        
-        if let onLocationFix = onLocationFix {
-            onLocationFix(location)
-        }
-    }
-}
+//extension LocationManager: CLLocationManagerDelegate {
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        guard let location = locations.first else { return }
+//        
+//        if let onLocationFix = onLocationFix {
+//            onLocationFix(location)
+//        }
+//    }
+//}

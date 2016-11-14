@@ -25,8 +25,6 @@ class ReminderDetailViewController: UITableViewController {
     let locationManager = LocationManager()
     let coreDataManager = CoreDataManager.sharedManager
     var notificationManager = NotificationManager()
-//    var localTrigger: UNLocationNotificationTrigger?
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,24 +47,14 @@ class ReminderDetailViewController: UITableViewController {
                 self.mapCell.isHidden = false
                 self.configureLocationCell(withLocation: location)
                 addRadiusOverlay(forLocation: location)
-                
-//                switch segmentedControl.selectedSegmentIndex {
-//                case 0: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
-//                case 1: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
-//                default: break
-//                }
             }
         }
     }
     
     func reloadDetailView() {
-        if let reminder = self.reminder, let location = reminder.location/*, let locationTrigger = localTrigger*/ {
+        if let reminder = self.reminder, let location = reminder.location {
             self.configureLocationCell(withLocation: location)
             addRadiusOverlay(forLocation: location)
-//            reminder.location = location
-//            coreDataManager.saveContext()
-//            let locationTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: segmentedControl.selectedSegmentIndex == 0 ? false : true)
-//            appDelegate.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
         }
     }
 
@@ -87,33 +75,15 @@ class ReminderDetailViewController: UITableViewController {
             self.locationCell.isHidden = false
             self.segmentedControlCell.isHidden = false
             self.mapCell.isHidden = false
-            
-            if !locationManager.isAuthorized() {
-                CLLocationManager().requestAlwaysAuthorization()
-            } else {
-                locationManager.getLocation()
-            }
-            
             self.locationCell.textLabel?.text = "Search location"
         }
-    }
-    
-    @IBAction func segmentedControlTapped(_ sender: UISegmentedControl) {
-//        if let reminder = self.reminder {
-//            switch sender.selectedSegmentIndex {
-//            case 0: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: false)
-//            case 1: self.localTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: true)
-//            default: break
-//            }
-//        }
     }
     
     @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
         if let reminder = reminder {
             let locationTrigger = self.notificationManager.addLocationTrigger(forReminder: reminder, whenLeaving: segmentedControl.selectedSegmentIndex == 0 ? false : true)
-            appDelegate.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
+            self.notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: locationTrigger)
         }
-        let _ = self.navigationController?.popViewController(animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

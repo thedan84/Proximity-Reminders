@@ -16,8 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     var window: UIWindow?
     let coreDataManager = CoreDataManager.sharedManager
     let locationManager = CLLocationManager()
-    let notificationManager = NotificationManager()
-    let localManager = LocationManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -28,43 +26,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound]) { granted, error in }
-        center.delegate = self
         
-//        let action = UNNotificationAction(identifier: "complete", title: "Complete", options: [])
-//        let category = UNNotificationCategory(identifier: "locationCategory", actions: [action], intentIdentifiers: [], options: [])
-//        UNUserNotificationCenter.current().setNotificationCategories([category])
+        if CLLocationManager.authorizationStatus() == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
         
-        locationManager.delegate = self
-        locationManager.allowsBackgroundLocationUpdates = true
-
         return true
     }
     
-    func scheduleNewNotification(withReminder reminder: Reminder, locationTrigger trigger: UNLocationNotificationTrigger?) {
-        if let text = reminder.text, let notificationTrigger = trigger , let location = reminder.location, let identifier = location.identifier {
-            let content = UNMutableNotificationContent()
-            content.body = text
-            content.sound = UNNotificationSound.default()
-            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: notificationTrigger)
-            let center = UNUserNotificationCenter.current()
-            self.startMonitoring(location: location)
-            center.add(request) { error in }
-        }
-    }
-    
-    func startMonitoring(location: Location) {
-        let thisLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        let region = CLCircularRegion(center: thisLocation.coordinate, radius: 50, identifier: location.identifier!)
-        self.locationManager.startMonitoring(for: region)
-    }
-    
-    func stopMonitoring(location: Location) {
-        for region in CLLocationManager().monitoredRegions {
-            guard let circularRegion = region as? CLCircularRegion, circularRegion.identifier == location.identifier else { continue }
-            self.locationManager.stopMonitoring(for: circularRegion)
-        }
-    }
-
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -99,25 +68,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             return true
         }
         return false
-    }
-}
-
-extension AppDelegate: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
-    }
-}
-
-extension AppDelegate: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("Exited region: \(region.identifier)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("Entered region: \(region.identifier)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        print("\(error)")
     }
 }

@@ -26,7 +26,6 @@
 
 /* Begin PBXFileReference section */
 		781D2C681DD10B31007CAEE6 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		7849883B1DD4F3E300261B16 /* TestLocation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestLocation.gpx; sourceTree = "<group>"; };
 		786446441DC736790056F7CB /* ReminderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderCell.swift; sourceTree = "<group>"; };
 		7878102D1DC7684E0020BEFC /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		78AF82E21DC723F200660385 /* ProximityReminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProximityReminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,7 +91,6 @@
 				78AF82F61DC723F200660385 /* Info.plist */,
 				78AF82E71DC723F200660385 /* ProximityReminders.xcdatamodeld */,
 				78AF83011DC727E100660385 /* TODO.rtf */,
-				7849883B1DD4F3E300261B16 /* TestLocation.gpx */,
 			);
 			path = ProximityReminders;
 			sourceTree = "<group>";
