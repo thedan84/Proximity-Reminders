@@ -35,7 +35,6 @@ class ReminderTableViewController: UITableViewController {
         } catch {
             AlertManager.showAlert(withTitle: "Error while fetching data", andMessage: "\(error.localizedDescription)", inViewController: self)
         }
-        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -108,9 +107,9 @@ class ReminderTableViewController: UITableViewController {
         }
         saveAction.isEnabled = false
         
-        alertController.addTextField { (textField) in
+        alertController.addTextField { textField in
             textField.placeholder = "Get milk"
-            NotificationCenter.default.addObserver(forName: Notification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main, using: { (notification) in
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: .main, using: { (notification) in
                 saveAction.isEnabled = textField.text != ""
             })
         }
@@ -122,7 +121,6 @@ class ReminderTableViewController: UITableViewController {
         
         self.present(alertController, animated: true, completion: nil)
     }
-    
 }
 
 //MARK: - NSFetchedResultsControllerDelegate

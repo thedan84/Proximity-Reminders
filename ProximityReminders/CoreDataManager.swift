@@ -46,7 +46,7 @@ class CoreDataManager {
         let reminder = Reminder(entity: Reminder.entity(), insertInto: self.managedObjectContext)
         
         reminder.text = text
-        reminder.date = NSDate()
+        reminder.date = Date()
         
         if let location = location {
             reminder.location = self.saveLocation(location: location)

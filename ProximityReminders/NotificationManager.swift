@@ -38,7 +38,7 @@ struct NotificationManager {
         if let text = reminder.text, let location = reminder.location, let identifier = location.identifier, let notificationTrigger = trigger {
             let content = UNMutableNotificationContent()
             content.body = text
-            content.sound = UNNotificationSound.default()
+            content.sound = UNNotificationSound.default
             let request = UNNotificationRequest(identifier: identifier, content: content, trigger: notificationTrigger)
             notificationCenter.add(request)
         }

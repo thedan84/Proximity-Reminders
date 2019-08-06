@@ -54,7 +54,7 @@ class ReminderDetailViewController: UITableViewController {
     }
     
     //MARK: - Helper method for NotificationCenter
-    func reloadDetailView() {
+    @objc func reloadDetailView() {
         if let reminder = self.reminder, let location = reminder.location {
             self.configureLocationCell(withLocation: location)
             addRadiusOverlay(forLocation: location)
@@ -152,6 +152,6 @@ extension ReminderDetailViewController: MKMapViewDelegate {
     //Display map overlay
     func addRadiusOverlay(forLocation location: Location) {
         let thisLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
-        mapView.add(MKCircle(center: thisLocation.coordinate, radius: 50))
+        mapView.addOverlay(MKCircle(center: thisLocation.coordinate, radius: 50))
     }
 }
